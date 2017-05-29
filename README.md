@@ -1,2 +1,2 @@
-# pp-morphdemo
-Morphing particles demo (FBO)
+# pp-minimal-fbo
+Minimal FBO class for Three.js
