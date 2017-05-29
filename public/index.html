@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html>
+<head lang="en">
+    <meta charset="UTF-8">
+    <title>Minimal FBO class - Perky Pat</title>
+    <meta property="og:description" content="Three.js + FBO // Morph + noise demo">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0">
+
+    <link rel="stylesheet" href="js/vendor/dat.gui.css">
+    <link rel="stylesheet" href="css/style.css">
+
+    <script src="//cdnjs.cloudflare.com/ajax/libs/three.js/85/three.min.js"></script>
+    <script src="js/vendor/dat.gui.js"></script>
+    <script src="js/vendor/stats.min.js"></script>
+    <script src="js/vendor/OrbitControls.js"></script>
+</head>
+<body class="show-loader">
+
+<div id="loader"></div>
+
+<div id="ui-btn">
+    <span class="show">Info</span>
+    <span class="hide">Hide info</span>
+</div>
+
+<div id="ui" class="show">
+    <div class="info">
+        <h3>Minimal FBO class</h3>
+        <p>
+            Minimal FBO class for <a href="https://threejs.org/">Three.js</a>. In this demo I used curl noise to animate the particles.
+            <span class="credits">Perky Pat // Esteban Almiron</span>
+        </p>
+    </div>
+</div>
+
+
+<script src="js/bundle.js"></script>
+</body>
+</html>
