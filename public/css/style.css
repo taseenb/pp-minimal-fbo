@@ -6,7 +6,7 @@ body {
 body {
   position: relative;
   overflow: hidden;
-  background-color: #333;
+  background-color: #39ABB2;
   font-family: Helvetica, Arial, sans-serif;
   color: white;
   padding: 0;
@@ -29,7 +29,7 @@ canvas {
   opacity: 0;
   pointer-events: none;
   transition-duration: 1s;
-  background-color: #333; }
+  background-color: #39ABB2; }
   .show-loader #loader {
     opacity: 1; }
 
