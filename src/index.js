@@ -121,6 +121,6 @@ class App {
 }
 
 window.onload = () => {
-  const app = new App(256);
+  const app = new App(256, 256);
   app.start();
 };
