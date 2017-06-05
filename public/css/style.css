@@ -113,4 +113,40 @@ canvas {
       background-color: white;
       color: black; }
 
+#captureBtn {
+  z-index: 5;
+  position: absolute;
+  top: 0;
+  right: 0;
+  padding: 20px;
+  text-transform: uppercase;
+  cursor: pointer;
+  font-size: 10px;
+  text-align: center;
+  width: 150px;
+  box-sizing: border-box;
+  opacity: 0;
+  pointer-events: none;
+  transition-property: opacity;
+  transition-duration: .4s; }
+  .show-ui #captureBtn {
+    opacity: 1;
+    pointer-events: auto; }
+  #captureBtn span {
+    white-space: nowrap;
+    padding: 4px 8px;
+    font-weight: bold; }
+  #captureBtn.off span.capture {
+    display: block;
+    background-color: black;
+    color: white; }
+  #captureBtn.off span.capturing {
+    display: none; }
+  #captureBtn.on span.capturing {
+    display: block;
+    background-color: white;
+    color: black; }
+  #captureBtn.on span.capture {
+    display: none; }
+
 /*# sourceMappingURL=style.css.map */

@@ -1,3 +1,4 @@
+const CCapture = require('ccapture.js')
 const glslify = require('glslify')
 const OrbitControls = require('three-orbit-controls')(THREE)
 const createBackground = require('./bg')
@@ -85,6 +86,11 @@ class App {
 
     // Render the scene on the screen
     this.renderer.render(this.scene, this.camera)
+
+    // Capture images
+    if (this.capture) {
+      this.capturer.capture(this.renderer.domElement)
+    }
   }
 
   initStats () {
@@ -92,6 +98,30 @@ class App {
     this.stats.showPanel(0) // 0: fps, 1: ms, 2: mb, 3+: custom
     this.stats.dom.id = 'stats'
     document.getElementById('ui').appendChild(this.stats.dom)
+  }
+
+  initCapture () {
+    this.capture = false
+    this.capturer = new CCapture({
+      format: 'webm'
+      // format: 'png'
+    })
+
+    const btn = document.getElementById('captureBtn')
+
+    btn.addEventListener('click', () => {
+      this.capture = !this.capture
+      if (this.capture) {
+        btn.classList.remove('off')
+        btn.classList.add('on')
+        this.capturer.start()
+      } else {
+        btn.classList.remove('on')
+        btn.classList.add('off')
+        this.capturer.stop()
+        this.capturer.save()
+      }
+    })
   }
 
   initUI () {
@@ -103,6 +133,7 @@ class App {
     })
 
     this.initStats()
+    this.initCapture()
   }
 
   initBg () {

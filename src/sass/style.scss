@@ -151,3 +151,56 @@ canvas {
     }
   }
 }
+
+
+#captureBtn {
+  z-index: 5;
+  position: absolute;
+  top: 0;
+  right: 0;
+  padding: 20px;
+  text-transform: uppercase;
+  cursor: pointer;
+  font-size: 10px;
+  text-align: center;
+  width: 150px;
+  box-sizing: border-box;
+  opacity: 0;
+  pointer-events: none;
+  transition-property: opacity;
+  transition-duration: .4s;
+
+  .show-ui & {
+    opacity: 1;
+    pointer-events: auto;
+  }
+
+  span {
+    white-space: nowrap;
+    padding: 4px 8px;
+    font-weight: bold;
+  }
+
+  &.off {
+    span.capture {
+      display: block;
+      background-color: black;
+      color: white;
+    }
+    span.capturing {
+      display: none;
+    }
+  }
+
+  &.on {
+    span.capturing {
+      display: block;
+      background-color: white;
+      color: black;
+    }
+    span.capture {
+      display: none;
+    }
+  }
+
+}

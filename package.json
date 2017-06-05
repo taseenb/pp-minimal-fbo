@@ -15,6 +15,7 @@
     "pushall": "git add --all . && git commit -m \"update\" && git push"
   },
   "dependencies": {
+    "ccapture.js": "^1.0.6",
     "glsl-blend-soft-light": "^1.0.5",
     "glsl-film-grain": "^1.0.4",
     "glsl-noise": "0.0.0",
