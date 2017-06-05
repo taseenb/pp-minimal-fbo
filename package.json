@@ -30,7 +30,8 @@
     "budo": "^10.0.3",
     "npm-run-all": "^4.0.2",
     "sass": "^0.5.0",
-    "standard": "^10.0.2"
+    "standard": "^10.0.2",
+    "surge": "^0.19.0"
   },
   "standard": {
     "globals": [
