@@ -1,16 +1,20 @@
-var glslify = require('glslify')
-var vert = glslify(__dirname + '/glsl/bg.vert')
-var frag = glslify(__dirname + '/glsl/bg.frag')
+const glslify = require('glslify')
 
-module.exports = createBackground;
+const vert = glslify('./glsl/bg.vert')
+const frag = glslify('./glsl/bg.frag')
 
-function createBackground(opt) {
+/**
+ * Creates a background
+ * See: https://github.com/mattdesl/three-vignette-background (thanks @mattdesl)
+ * @param opt
+ * @returns {Mesh}
+ */
+function createBackground (opt) {
   opt = opt || {}
-  var geometry = opt.geometry || new THREE.PlaneBufferGeometry(2, 2, 1);
 
-  var orientation = window.innerWidth > window.innerHeight ? 'landscape' : 'portrait';
-
-  var material = new THREE.RawShaderMaterial({
+  const geometry = opt.geometry || new THREE.PlaneBufferGeometry(2, 2, 1)
+  const orientation = window.innerWidth > window.innerHeight ? 'landscape' : 'portrait'
+  const material = new THREE.RawShaderMaterial({
     vertexShader: vert,
     fragmentShader: frag,
     side: THREE.DoubleSide,
@@ -29,64 +33,66 @@ function createBackground(opt) {
       color1: {type: 'c', value: new THREE.Color('#5b4169')}
     },
     depthTest: false
-  });
+  })
 
-  var mesh = new THREE.Mesh(geometry, material);
-  mesh.frustumCulled = false;
-  mesh.style = style;
-  if (opt) mesh.style(opt);
-
-  return mesh;
-
-  function style(opt) {
-    opt = opt || {};
+  function style (opt) {
+    opt = opt || {}
     if (Array.isArray(opt.colors)) {
-      var colors = opt.colors.map(function (c) {
+      const colors = opt.colors.map(function (c) {
         if (typeof c === 'string' || typeof c === 'number') {
-          return new THREE.Color(c);
+          return new THREE.Color(c)
         }
-        return c;
-      });
-      material.uniforms.color1.value.copy(colors[0]);
-      material.uniforms.color2.value.copy(colors[1]);
+        return c
+      })
+      material.uniforms.color1.value.copy(colors[0])
+      material.uniforms.color2.value.copy(colors[1])
     }
     if (typeof opt.aspect === 'number') {
-      material.uniforms.aspect.value = opt.aspect;
+      material.uniforms.aspect.value = opt.aspect
     }
     if (typeof opt.grainScale === 'number') {
-      material.uniforms.grainScale.value = opt.grainScale;
+      material.uniforms.grainScale.value = opt.grainScale
     }
     if (typeof opt.grainTime === 'number') {
-      material.uniforms.grainTime.value = opt.grainTime;
+      material.uniforms.grainTime.value = opt.grainTime
     }
     if (opt.smooth) {
-      var smooth = fromArray(opt.smooth, THREE.Vector2);
-      material.uniforms.smooth.value.copy(smooth);
+      const smooth = fromArray(opt.smooth, THREE.Vector2)
+      material.uniforms.smooth.value.copy(smooth)
     }
     if (opt.offset) {
-      var offset = fromArray(opt.offset, THREE.Vector2);
-      material.uniforms.offset.value.copy(offset);
+      const offset = fromArray(opt.offset, THREE.Vector2)
+      material.uniforms.offset.value.copy(offset)
     }
     if (typeof opt.noiseAlpha === 'number') {
-      material.uniforms.noiseAlpha.value = opt.noiseAlpha;
+      material.uniforms.noiseAlpha.value = opt.noiseAlpha
     }
     if (typeof opt.scale !== 'undefined') {
-      var scale = opt.scale;
+      let scale = opt.scale
       if (typeof scale === 'number') {
-        scale = [scale, scale];
+        scale = [scale, scale]
       }
-      scale = fromArray(scale, THREE.Vector2);
-      material.uniforms.scale.value.copy(scale);
+      scale = fromArray(scale, THREE.Vector2)
+      material.uniforms.scale.value.copy(scale)
     }
     if (typeof opt.aspectCorrection !== 'undefined') {
-      material.uniforms.aspectCorrection.value = Boolean(opt.aspectCorrection);
+      material.uniforms.aspectCorrection.value = Boolean(opt.aspectCorrection)
     }
   }
 
-  function fromArray(array, VectorType) {
+  function fromArray (array, VectorType) {
     if (Array.isArray(array)) {
-      return new VectorType().fromArray(array);
+      return new VectorType().fromArray(array)
     }
-    return array;
+    return array
   }
+
+  const mesh = new THREE.Mesh(geometry, material)
+  mesh.frustumCulled = false
+  mesh.style = style
+  if (opt) mesh.style(opt)
+
+  return mesh
 }
+
+module.exports = createBackground
