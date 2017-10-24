@@ -25,7 +25,7 @@ void main() {
   float dst = length(q);
   dst = smoothstep(smoother.x, smoother.y, dst);
   vec3 color = mix(color1, color2, dst);
-  
+
   if (noiseAlpha > 0.0 && grainScale > 0.0) {
     float gSize = 1.0 / grainScale;
     float g = grain(vUv, vec2(gSize * aspect, gSize), grainTime);

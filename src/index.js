@@ -1,25 +1,24 @@
 const CCapture = require('ccapture.js')
 const glslify = require('glslify')
+const isMobile = require('ismobilejs')
 const OrbitControls = require('three-orbit-controls')(THREE)
-const createBackground = require('./bg')
+const Background = require('./bg/Bg')
 const FBO = require('./fbo')
 
 // FBO shaders
-const fboPositionVertex = glslify(__dirname + '/glsl/fboPosition.vert')
-const fboPositionFragment = glslify(__dirname + '/glsl/fboPosition.frag')
-
-// Particle shaders
-const renderFragment = glslify(__dirname + '/glsl/render.frag')
-const renderVertex = glslify(__dirname + '/glsl/render.vert')
+const fboPositionVertex = glslify('./glsl/fboPosition.vert')
+const fboPositionFragment = glslify('./glsl/fboPosition.frag')
 
 class App {
-
   constructor (fboSize) {
     this.width = window.innerWidth
     this.height = window.innerHeight
-    this.fboSize = fboSize || 256 // size of texture 256 x 256 = 65K particles
+    this.fboSize = fboSize || 128 // size of texture 256 x 256 = 65K particles
 
-    this.lastTime = 0 // time of the last animation frame
+    this.state = {
+      paused: false,
+      isMobile: isMobile.any
+    }
 
     window.addEventListener('resize', this.onResize.bind(this), false)
   }
@@ -27,29 +26,37 @@ class App {
   init3dScene () {
     this.scene = new THREE.Scene()
     this.renderer = new THREE.WebGLRenderer({
-      // antialias: true,
+      antialias: true,
       alpha: true
     })
 
     this.renderer.setSize(this.width, this.height)
+    this.renderer.setPixelRatio(window.devicePixelRatio || 1)
+    this.renderer.gammaInput = true
+    this.renderer.gammaOutput = true
+    this.renderer.physicallyCorrectLights = true
     this.camera = new THREE.PerspectiveCamera(30, this.width / this.height, 1, 1000)
-    this.camera.position.z = 5
+    this.camera.position.z = 6
     document.body.appendChild(this.renderer.domElement)
     this.controls = new OrbitControls(this.camera, document.body)
+    this.controls.autoRotate = true
+    this.controls.autoRotateSpeed = 1
 
     this.material = new THREE.ShaderMaterial({
       uniforms: {
-        datatexture: {type: 't', value: null},
-        pointSize: {type: 'f', value: 1.4}
+        datatexture: { type: 't', value: null },
+        pointSize: { type: 'f', value: window.devicePixelRatio * 2 },
+        opacity: { type: 'f', value: 0.0 }
       },
       transparent: true,
       // blending: THREE.AdditiveBlending,
-      vertexShader: renderVertex,
-      fragmentShader: renderFragment
+      vertexShader: glslify('./glsl/render.vert'),
+      fragmentShader: glslify('./glsl/render.frag')
     })
 
     const geo = new THREE.PlaneBufferGeometry(1, 1, this.fboSize, this.fboSize)
     this.particles = new THREE.Points(geo, this.material)
+    this.particles.material.uniforms['opacity'].value = 0.075
     this.scene.add(this.particles)
   }
 
@@ -64,28 +71,29 @@ class App {
   }
 
   update () {
-    requestAnimationFrame(this.update.bind(this))
+    window.requestAnimationFrame(this.update.bind(this))
 
     this.stats.begin()
-    const now = performance.now()
+    const now = window.performance.now()
     let delta = (now - this.lastTime) / 1000
     if (delta > 1) delta = 1 // safety cap on large deltas
-    this.lastTime = now
+    // this.lastTime = now
     this.render(now, delta)
     this.stats.end()
   }
 
   render (now, delta) {
-    this.positionFBO.update(now, delta)
-
-    // Send FBO texture to shaders
-    this.material.uniforms.datatexture.value = this.positionFBO.texture
-
-    this.particles.rotation.x += Math.PI / 180 * .1
-    this.particles.rotation.y -= Math.PI / 180 * .1
+    if (!this.state.paused) {
+      // Send FBO texture to shaders
+      this.positionFBO.update(now, delta)
+      this.particles.material.uniforms.datatexture.value = this.positionFBO.texture
+    }
 
     // Render the scene on the screen
     this.renderer.render(this.scene, this.camera)
+
+    // Update autorotate
+    this.controls.update()
 
     // Capture images
     if (this.capture) {
@@ -94,7 +102,7 @@ class App {
   }
 
   initStats () {
-    this.stats = new Stats()
+    this.stats = new window.Stats()
     this.stats.showPanel(0) // 0: fps, 1: ms, 2: mb, 3+: custom
     this.stats.dom.id = 'stats'
     document.getElementById('ui').appendChild(this.stats.dom)
@@ -128,7 +136,7 @@ class App {
     document.body.classList.remove('show-loader')
     document.body.classList.add('show-ui-btn')
 
-    document.getElementById('ui-btn').addEventListener('click', (e) => {
+    document.getElementById('ui-btn').addEventListener('click', e => {
       document.body.classList.toggle('show-ui')
     })
 
@@ -137,8 +145,23 @@ class App {
   }
 
   initBg () {
-    this.background = createBackground()
+    this.background = new Background({
+      colors: ['#39abb2', '#5b4169'],
+      isMobile: isMobile.any
+    })
+
     this.scene.add(this.background)
+
+    return this
+  }
+
+  initKeyEvents () {
+    document.body.addEventListener('keyup', e => {
+      if (e.key === 'p' || e.key === 'P') {
+        // Toggle pause
+        this.state.paused = !this.state.paused
+      }
+    })
   }
 
   start () {
@@ -146,12 +169,13 @@ class App {
     this.initFBO()
     this.initUI()
     this.initBg()
+    this.initKeyEvents()
     this.update()
   }
-
 }
 
 window.onload = () => {
-  const app = new App(256)
+  const fboSize = isMobile.any ? 128 : 256
+  const app = new App(fboSize)
   app.start()
 }

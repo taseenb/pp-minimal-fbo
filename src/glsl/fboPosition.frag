@@ -22,11 +22,9 @@ void main() {
     vec4 pos = texture2D( datatexture, vUv );
     float alpha = pos.a;
 
-    vec3 p = curlNoise(0.0015 * pos.xyz + time * 0.0001);
-
-//    float x = curlNoise(vec3(pos.xxx) * (10000.0 + time) * 0.0001);
-//    float y = curlNoise(vec3(pos.yyy) * (10000.0 + time) * 0.0001);
-//    float z = curlNoise(vec3(pos.zzz) * (10000.0 + time) * 0.0001);
+    vec3 p = curlNoise(0.0018 * pos.xyz + time * 0.00015);
+    p += p;
+    p *= .5;
 
     gl_FragColor = vec4(p, alpha);
 

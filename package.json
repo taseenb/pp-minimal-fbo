@@ -10,28 +10,31 @@
     "build": "run-p build:*",
     "build:js": "browserify ./src/index.js -t babelify -t glslify | uglifyjs -m -c warnings=false > public/js/bundle.js",
     "build:sass": "sass src/sass/style.scss public/css/style.css",
-    "deploy": "npm run build && npm run deploy:upload",
+    "deploy": "yarn run build && yarn run deploy:upload",
     "deploy:upload": "surge -p public -d pp-minimal-fbo.surge.sh",
-    "pushall": "git add --all . && git commit -m \"update\" && git push"
+    "pushall": "git add --all . && git commit -m \"update\" && git push",
+    "ncu": "npm-check-updates"
   },
   "dependencies": {
     "ccapture.js": "^1.0.6",
     "glsl-blend-soft-light": "^1.0.5",
     "glsl-film-grain": "^1.0.4",
     "glsl-noise": "0.0.0",
+    "ismobilejs": "^0.4.1",
+    "npm-check-updates": "^2.13.0",
     "three-orbit-controls": "^82.1.0"
   },
   "devDependencies": {
-    "browserify": "^14.3.0",
-    "glslify": "^6.0.2",
-    "uglify-js": "^3.0.8",
     "babel-preset-es2015": "^6.24.1",
     "babelify": "^7.3.0",
+    "browserify": "^14.3.0",
     "budo": "^10.0.3",
+    "glslify": "^6.0.2",
     "npm-run-all": "^4.0.2",
     "sass": "^0.5.0",
     "standard": "^10.0.2",
-    "surge": "^0.19.0"
+    "surge": "^0.19.0",
+    "uglify-js": "^3.0.8"
   },
   "standard": {
     "globals": [
@@ -41,6 +44,11 @@
   "browserify": {
     "transform": [
       "glslify"
+    ]
+  },
+  "babel": {
+    "presets": [
+      "es2015"
     ]
   }
 }
