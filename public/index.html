@@ -1,11 +1,20 @@
 <!DOCTYPE html>
 <html>
+
 <head lang="en">
     <meta charset="UTF-8">
-    <title>Minimal FBO class</title>
-    <meta property="og:description" content="">
-    <meta name="viewport"
-          content="width=device-width, user-scalable=no, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0">
+    <title>Minimal FBO</title>
+    <meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0">
+
+    <meta property="og:url" content="https://pp-minimal-fbo.surge.sh/" />
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content="Minimal FBO" />
+    <meta property="og:description" content="Minimal FBO class for Three.js." />
+    <meta property="og:image" content="https://pp-minimal-fbo.surge.sh/img/image.jpg" />
+    <meta property="og:image:width" content="1980" />
+    <meta property="og:image:height" content="1080" />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:creator" content="@taseenb" />
 
     <link rel="stylesheet" href="js/vendor/dat.gui.css">
     <link rel="stylesheet" href="css/style.css">
@@ -14,34 +23,39 @@
     <script src="js/vendor/dat.gui.js"></script>
     <script src="js/vendor/stats.min.js"></script>
 </head>
+
 <body class="show-loader">
 
-<div id="loader"></div>
+    <div id="loader"></div>
 
-<div id="ui-btn">
-    <span class="show">Info</span>
-    <span class="hide">Hide info</span>
-</div>
-
-<div id="ui" class="show">
-    <div class="info">
-        <h3>Minimal FBO class</h3>
-        <p>
-            Minimal FBO class for <a href="https://threejs.org/">Three.js</a>.<br>
-            This simple demo shows 65K particles (press P to pause).
-            <br><br>
-            [ <a href="https://github.com/taseenb/pp-minimal-fbo">source</a> ]
-            <br><br>
-            <span class="credits">Perky Pat // Esteban Almiron</span>
-        </p>
+    <div id="ui-btn">
+        <span class="show">Info</span>
+        <span class="hide">Hide info</span>
     </div>
-</div>
 
-<div id="captureBtn" class="off">
-    <span class="capture">Capture</span>
-    <span class="capturing">Capturing...</span>
-</div>
+    <div id="ui" class="show">
+        <div class="info">
+            <h3>Minimal FBO</h3>
+            <p>
+                Minimal FBO class for
+                <a href="https://threejs.org/">Three.js</a>.
+                <br> This simple demo shows 65K particles (press P to pause).
+                <br>
+                <br> [
+                <a href="https://github.com/taseenb/pp-minimal-fbo">source</a> ]
+                <br>
+                <br>
+                <span class="credits">Perky Pat // Esteban Almiron</span>
+            </p>
+        </div>
+    </div>
 
-<script src="js/bundle.js"></script>
+    <div id="captureBtn" class="off">
+        <span class="capture">Capture</span>
+        <span class="capturing">Capturing...</span>
+    </div>
+
+    <script src="js/bundle.js"></script>
 </body>
+
 </html>

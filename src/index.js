@@ -111,8 +111,8 @@ class App {
   initCapture () {
     this.capture = false
     this.capturer = new CCapture({
-      format: 'webm'
-      // format: 'png'
+      // format: 'webm'
+      format: 'png'
     })
 
     const btn = document.getElementById('captureBtn')

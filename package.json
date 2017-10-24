@@ -11,7 +11,7 @@
     "build:js": "browserify ./src/index.js -t babelify -t glslify | uglifyjs -m -c warnings=false > public/js/bundle.js",
     "build:sass": "sass src/sass/style.scss public/css/style.css",
     "deploy": "yarn run build && yarn run deploy:upload",
-    "deploy:upload": "surge -p public -d pp-minimal-fbo.surge.sh",
+    "deploy:upload": "surge -p public -d https://pp-minimal-fbo.surge.sh",
     "pushall": "git add --all . && git commit -m \"update\" && git push",
     "ncu": "npm-check-updates"
   },
